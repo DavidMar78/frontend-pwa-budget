@@ -1,5 +1,6 @@
 import "./App.css"
 import {useState} from "react";
+import Donut from "./components/Donut.jsx";
 
 function App() {
     const [countDavid, setCountDavid] = useState(0);
@@ -29,23 +30,20 @@ function App() {
     return (
         <div className="container">
             <h1>BUDGET COURSE</h1>
+
             <div className="info-container">
-                <div className="content">
-                    <h1>DAVID</h1>
-                    <div>TOTAL:{countDavid}</div>
-                    <div className="count">{diffDavid}</div>
-                </div>
-                <div className="content">
-                    <h1>LAETITIA</h1>
-                    <div>TOTAL:{countLaeti}</div>
-                    <div className="count">{diffLaeti}</div>
-                </div>
+                {diffDavid > 0 ? <Donut difference={diffDavid} user="David"/>
+                : <Donut difference={diffLaeti} user="Laetitia"/>}
+
             </div>
             <div>
-                {!newEnter ? <button onClick={HandleClickButton}>Nouvelle entrée</button>
+                {!newEnter ? <button onClick={HandleClickButton} className="floating-btn">
+                        +
+                </button>
                     :
                 <div className="form-container">
-                    <h1>Formulaire</h1>
+                    <h1>Nouvelle entrée</h1>
+
                     <form action="envoi" onSubmit={handleSubmit}>
                         <select name="user" id="1">
                             <option value="david">David</option>
@@ -63,16 +61,15 @@ function App() {
                                required
                         />
                         <button type="submit">Valider</button>
-                        <button type="button" onClick={HandleClickButton}>Annuler</button>
+                        <button type="button" onClick={HandleClickButton}>
+                            Annuler
+                        </button>
                     </form>
-
                 </div>
                 }
             </div>
-
         </div>
         )
-
 }
 
 export default App;

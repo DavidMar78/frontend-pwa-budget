@@ -3,17 +3,13 @@
     margin: 0 auto;
     padding: 10px;
     text-align: center;
+
 }
 
 .info-container {
     display: flex;
     gap: 20px;
-}
-
-.content {
-    flex: 1;
-    border: 1px solid black;
-    height: 175px;
+    justify-content: center;
 }
 
 .count {
@@ -21,9 +17,25 @@
 }
 
 button {
-    padding: 25px;
+    padding: 20px;
     margin: 10px;
-    font-size: 20px;
+    font-size: 50px;
+}
+
+.floating-btn {
+    position: fixed;
+    bottom: 50px;
+    right: 20px;
+
+    padding: 20px;
+    border-radius: 50%;
+    font-size: 30px;
+
+    background: #8884d8;
+    color: white;
+    box-shadow:
+            0 4px 10px rgba(0,0,0,0.1),
+            0 8px 20px rgba(136, 132, 216, 0.4);
 }
 
 .form-container {
