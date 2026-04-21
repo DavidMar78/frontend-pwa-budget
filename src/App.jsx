@@ -11,6 +11,7 @@ function App() {
     const [historical, setHistorical] = useState([])
     const diffDavid = countDavid - countLaeti;
     const diffLaeti = countLaeti - countDavid;
+    const [value, setValue] = useState("");
     const convertDiffDavid = diffDavid.toLocaleString("fr-FR", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2
@@ -23,6 +24,7 @@ function App() {
 
     function HandleClickButton() {
         setNewEnter(prev => !prev);
+        setValue("");
     }
 
     function handleSubmit(e) {
@@ -45,6 +47,7 @@ function App() {
             setCountLaeti(prev => prev + formValue);
         }
         HandleClickButton();
+        setValue("");
     }
 
     return (
@@ -63,7 +66,7 @@ function App() {
                         <div>
                             {historical.map((purchase, index) => (
                                 <p key={index}>
-                                    {date.toLocaleDateString()} | {purchase.user} | {purchase.shop} | {purchase.sum} euros
+                                    {date.toLocaleDateString()} | {purchase.user} | {purchase.shop} | {purchase.sum.toLocaleString("fr-FR")} euros
                                 </p>
                             ))}
                         </div>
@@ -118,6 +121,14 @@ function App() {
                                    name="myInput"
                                    required
                                    className="input-sum"
+                                   value={value}
+                                   onChange={(e) => {
+                                       let val = e.target.value;
+                                       val = val.replace(",",".");
+                                       if (/^\d*\.?\d{0,2}$/.test(val)) {
+                                           setValue(val);
+                                       }
+                                   }}
                             />
                         </label>
 
