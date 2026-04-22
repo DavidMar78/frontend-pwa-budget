@@ -50,6 +50,19 @@ form p {
     margin: 10px 0;
 }
 
+.line-expense-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 10px;
+}
+
+.line-expense-container button {
+    padding: 4px 8px;
+    font-size: 20px;
+    margin-left: auto;
+}
+
 .username-container,
 .shop-container {
     justify-content: center;

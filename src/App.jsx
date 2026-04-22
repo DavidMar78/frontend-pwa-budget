@@ -1,54 +1,95 @@
 import "./App.css"
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import Donut from "./components/Donut.jsx";
 import { FaCheck } from "react-icons/fa";
 import { IoMdClose } from "react-icons/io";
 
 function App() {
-    const [countDavid, setCountDavid] = useState(0);
-    const [countLaeti, setCountLaeti] = useState(0);
     const [newEnter, setNewEnter] = useState(false);
-    const [historical, setHistorical] = useState([])
-    const diffDavid = countDavid - countLaeti;
-    const diffLaeti = countLaeti - countDavid;
+    const [data, setData] = useState([]);
     const [value, setValue] = useState("");
-    const convertDiffDavid = diffDavid.toLocaleString("fr-FR", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
-    const convertDiffLaeti = diffLaeti.toLocaleString("fr-FR", {
-        minimumFractionDigits: 2,
-        maximumFractionDigits: 2
-    });
     const date = new Date(Date.now());
 
-    function HandleClickButton() {
+    const fetchData = async () => {
+        try {
+            const res = await fetch("http://localhost:3001/expenses");
+
+            if (!res.ok) throw new Error("Erreur serveur");
+
+            const data = await res.json();
+            setData(data);
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    useEffect(() => {
+        fetchData()
+    },[]);
+
+    const handleDelete = async (id) => {
+        try {
+            const res = await fetch(`http://localhost:3001/expenses/${id}`, {
+                method: "DELETE"
+            });
+
+            if (!res.ok) throw new Error("Erreur DELETE");
+
+            fetchData();
+
+        } catch (error) {
+            console.log(error);
+        }
+    };
+
+    function handleClickButton() {
         setNewEnter(prev => !prev);
         setValue("");
     }
 
-    function handleSubmit(e) {
+    async function handleSubmit(e) {
         e.preventDefault();
+
         const formData = new FormData(e.target);
         const formValue = Number(formData.get("myInput"));
         const formUser = e.target.user.value;
         const formShop = e.target.shop.value;
 
-        setHistorical(prev => [
-            ...prev,
-            { user: formUser, shop: formShop, sum: formValue, date: Date.now()}
-        ])
-
-        console.log(historical);
-
-        if (formUser === "David") {
-            setCountDavid(prev => prev + formValue);
-        } else {
-            setCountLaeti(prev => prev + formValue);
-        }
-        HandleClickButton();
+        await fetch("http://localhost:3001/expenses", {
+            method: "POST",
+            headers: {
+                "Content-Type": "application/json"
+            },
+            body: JSON.stringify({
+                user: formUser,
+                shop: formShop,
+                sum: formValue,
+                date: Date.now()
+            })
+        });
+        handleClickButton();
         setValue("");
     }
+
+    const totalDavid = data
+        .filter(item => item.user === "David")
+        .reduce((acc, item) => acc + item.sum, 0)
+
+    const totalLaetitia = data
+        .filter(item => item.user === "Laetitia")
+        .reduce((acc, item) => acc + item.sum, 0)
+
+    const diffDavid = totalDavid - totalLaetitia;
+    const diffLaetitia = totalLaetitia - totalDavid;
+
+    const convertDiffDavid = diffDavid.toLocaleString("fr-FR",{
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
+    const convertDiffLaetitia = diffLaetitia.toLocaleString("fr-FR",{
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2
+    });
 
     return (
         <div className="container">
@@ -56,21 +97,24 @@ function App() {
 
             <div className="info-container">
                 {diffDavid > 0 ? <Donut difference={convertDiffDavid} user="David"/>
-                : <Donut difference={convertDiffLaeti} user="Laetitia"/>}
-
+                : <Donut difference={convertDiffLaetitia} user="Laetitia"/>}
             </div>
 
             <div>
                 {!newEnter ?
                     <>
                         <div>
-                            {historical.map((purchase, index) => (
-                                <p key={index}>
-                                    {date.toLocaleDateString()} | {purchase.user} | {purchase.shop} | {purchase.sum.toLocaleString("fr-FR")} euros
-                                </p>
+                            {data.map((item) => (
+                                <div key={item.id} className="line-expense-container">
+                                    <p>
+                                        {date.toLocaleDateString()} | {item.user} | {item.shop} | {item.sum.toLocaleString("fr-FR")} €
+                                    </p>
+                                    <button> u </button>
+                                    <button onClick={() => handleDelete(item.id)}> x </button>
+                                </div>
                             ))}
                         </div>
-                        <button onClick={HandleClickButton} className="floating-btn">
+                        <button onClick={handleClickButton} className="floating-btn">
                             +
                         </button>
                     </>
