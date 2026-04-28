@@ -50,17 +50,29 @@ form p {
     margin: 10px 0;
 }
 
+.list-container {
+    display: flex;
+}
+
 .line-expense-container {
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-left: 10px;
+    width: 100%;
+
 }
 
-.line-expense-container button {
-    padding: 4px 8px;
-    font-size: 20px;
+.line-expense-container :nth-child(2) {
+    padding: 8px 20px;
     margin-left: auto;
+}
+
+.line-expense-container.cel-light {
+    background-color: #e8e3e3;
+}
+
+.line-expense-container.cel-dark {
+    background-color: #d5d2d2;
 }
 
 .username-container,
