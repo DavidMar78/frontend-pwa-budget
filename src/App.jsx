@@ -134,7 +134,7 @@ function App() {
 
     return (
         <div className="container">
-            <h2>BUDGET COURSE v1-2</h2>
+            <h2>BUDGET COURSE v1-3</h2>
 
             <div className="info-container">
                 {diffDavid > 0 ? <Donut difference={convertDiffDavid} user="David"/>
