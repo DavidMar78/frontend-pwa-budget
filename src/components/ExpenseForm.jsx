@@ -3,95 +3,49 @@ import {IoMdClose} from "react-icons/io";
 
 const ExpenseForm =
     ({
+         data,
          editItem,
          value,
+         setValue,
          handleOpenCloseForm,
          handleSubmit
     }) => {
+
+
 
     return (
         <form action="envoi" onSubmit={handleSubmit}>
             { editItem ? <h2>Modifier la dépense</h2> : <h2>Nouvelle dépense</h2> }
             <p>Choisissez le payeur</p>
             <div className="username-container">
-                <label>
-                    <input
-                        type="radio"
-                        name="user"
-                        value="David"
-                        defaultChecked={editItem?.user === "David"}
-                        required
-                    />
-                    <span className="btn-segment">David</span>
-                </label>
-                <label>
-                    <input
-                        type="radio"
-                        name="user"
-                        value="Laetitia"
-                        defaultChecked={editItem?.user === "Laetitia"}
-                    />
-                    <span className="btn-segment">Laetitia</span>
-                </label>
+                {data.map((item, index) => (
+                    <label key={index}>
+                        <input
+                            type="radio"
+                            name="user"
+                            value={item.user}
+                            defaultChecked={editItem?.user === item.user}
+                            required
+                        />
+                        <span className="btn-segment">{item.user}</span>
+                    </label>
+                ))}
             </div>
 
             <p>Choisissez la dépense</p>
             <div className="shop-container">
-                <label>
-                    <input
-                        type="radio"
-                        name="shop"
-                        value="Lidl"
-                        defaultChecked={editItem?.shop === "Lidl"}
-                        required
-                    />
-                    <span className="btn-segment">LIDL</span>
-                </label>
-                <label>
-                    <input
-                        type="radio"
-                        name="shop"
-                        value="InterM."
-                        defaultChecked={editItem?.shop === "InterM."}
-                    />
-                    <span className="btn-segment">InterM.</span>
-                </label>
-                <label>
-                    <input
-                        type="radio"
-                        name="shop"
-                        value="Carrefour"
-                        defaultChecked={editItem?.shop === "Carrefour"}
-                    />
-                    <span className="btn-segment">Carrefour</span>
-                </label>
-                <label>
-                    <input
-                        type="radio"
-                        name="shop"
-                        value="Action"
-                        defaultChecked={editItem?.shop === "Action"}
-                    />
-                    <span className="btn-segment">Action</span>
-                </label>
-                <label>
-                    <input
-                        type="radio"
-                        name="shop"
-                        value="Resto"
-                        defaultChecked={editItem?.shop === "Resto"}
-                    />
-                    <span className="btn-segment">Resto</span>
-                </label>
-                <label>
-                    <input
-                        type="radio"
-                        name="shop"
-                        value="Divers"
-                        defaultChecked={editItem?.shop === "Divers"}
-                    />
-                    <span className="btn-segment">Divers</span>
-                </label>
+                {data.map((item, index) => (
+                    <label key={index}>
+                        <input
+                            type="radio"
+                            name="shop"
+                            value={item.shop}
+                            defaultChecked={editItem?.shop === item.shop}
+                            required
+                        />
+                        <span className="btn-segment">{item.shop}</span>
+                    </label>
+                ))}
             </div>
 
             <p>Entrez le montant:</p>

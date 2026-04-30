@@ -1,23 +1,11 @@
-import { useEffect } from "react";
 import ExpenseItem from "./ExpenseItem.jsx";
 
 const ExpenseList =
     ( {   data,
-          setValue,
-          editItem,
           handleOpenCloseForm,
           handleDelete,
           handleUpdate
     }) => {
-
-    // Synchronisation de le useState value avec setEditItem
-    useEffect(() => {
-        if (editItem) {
-            setValue(editItem.sum.toString())
-        } else {
-            setValue("")
-        }
-    }, [editItem])
 
     return (
         <div className="list-container">

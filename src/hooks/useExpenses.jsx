@@ -113,6 +113,15 @@ const useExpenses = () => {
         setEditItem(null);
     }
 
+    // Synchronisation de le useState value avec setEditItem
+    useEffect(() => {
+        if (editItem) {
+            setValue(editItem.sum.toString())
+        } else {
+            setValue("")
+        }
+    }, [editItem])
+
     return {
         data,
         newEnter,

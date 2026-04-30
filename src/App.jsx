@@ -43,7 +43,9 @@ function App() {
                 />
                 :
                 < ExpenseForm
+                    data={data}
                     value={value}
+                    setValue={setValue}
                     editItem={editItem}
                     handleOpenCloseForm={handleOpenCloseForm}
                     handleSubmit={handleSubmit}
