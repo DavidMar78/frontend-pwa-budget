@@ -3,8 +3,8 @@ import { useMemo } from "react";
 import Donut from "./components/Donut.jsx";
 import ExpenseList from "./components/ExpenseList.jsx";
 import ExpenseForm from "./components/ExpenseForm.jsx";
-import useExpenses from "./hooks/useExpenses.jsx";
-import { computeDiff, format } from "./utils/calculateBalance.jsx"
+import useExpenses from "./hooks/useExpenses.js";
+import { computeDiff, format } from "./utils/calculateBalance.js"
 
 function App() {
     const {
