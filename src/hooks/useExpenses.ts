@@ -1,15 +1,30 @@
 import {useEffect, useState} from "react";
-import { fetchExpense, createExpense, updateExpense, deleteExpense } from "../services/expensesApi.js";
+import { fetchExpense, createExpense, updateExpense, deleteExpense } from "../services/expensesApi";
+import {Expense} from "../types/expense";
+import * as React from "react";
 
-const useExpenses = () => {
+type UseExpensesReturn = {
+    data: Expense[];
+    newEnter: boolean;
+    value: string;
+    setValue: React.Dispatch<React.SetStateAction<string>>;
+    editItem: Expense | null;
+    fetchData: () => Promise<void>;
+    handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
+    handleUpdate: (item: Expense) => void;
+    handleDelete: (id: number) => Promise<void>;
+    handleOpenCloseForm: () => void;
+}
 
-    const [data, setData] = useState([]);
-    const [editItem, setEditItem] = useState(null);
-    const [value, setValue] = useState("");
-    const [newEnter, setNewEnter] = useState(false);
+const useExpenses = (): UseExpensesReturn => {
+
+    const [data, setData] = useState<Expense[]>([]);
+    const [editItem, setEditItem] = useState<Expense | null>(null);
+    const [value, setValue] = useState<string>("");
+    const [newEnter, setNewEnter] = useState<boolean>(false);
 
     // Fonction la + importante, celle qui charge tte les données
-    const fetchData = async () => {
+    const fetchData = async (): Promise<void> => {
         try {
             // je recup le retour de données de fetchExpense()
             const data = await fetchExpense()
@@ -19,18 +34,18 @@ const useExpenses = () => {
                 }
                 return data
             });
-        } catch (error) {
+        } catch (error: unknown) {
             console.log(error)
         }
     }
 
     useEffect(() => {
         // Premier chargement
-        const loadData = async () => {
+        const loadData = async (): Promise<void> => {
             try {
                 const data = await fetchExpense()
                 setData(data)
-            } catch (error) {
+            } catch (error: unknown) {
                 console.log(error)
             }
         }
@@ -43,14 +58,15 @@ const useExpenses = () => {
         return() => clearInterval(interval)
     },[]);
 
-    async function handleSubmit(e) {
+    async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
         e.preventDefault();
 
-        const formData = new FormData(e.target);
+        const form = e.target as HTMLFormElement;
+        const formData = new FormData(form);
 
         const payload = {
-            user: formData.get("user"),
-            shop: formData.get("shop"),
+            user: formData.get("user") as string,
+            shop: formData.get("shop") as string,
             sum: Number(value),
             date: Date.now()
         }
@@ -68,20 +84,20 @@ const useExpenses = () => {
             // RESET UI
             setEditItem(null);
             setValue("");
-            e.target.reset();
+            form.reset();
 
-        } catch (error) {
+        } catch (error: unknown) {
             console.log(error);
         }
     }
 
-    function handleUpdate(item)  {
+    function handleUpdate(item: Expense)  {
         setEditItem(item);
         setValue(item.sum.toString())
         setNewEnter(true);
     }
 
-  async function handleDelete(id) {
+  async function handleDelete(id: number) {
         try {
             // delete coté serveur
             await deleteExpense(id)
@@ -89,7 +105,7 @@ const useExpenses = () => {
             // refresh UI
             await fetchData()
 
-        } catch (error) {
+        } catch (error: unknown) {
             console.log(error)
         }
     }

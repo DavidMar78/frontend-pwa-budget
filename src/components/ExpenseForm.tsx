@@ -1,17 +1,26 @@
 import {FaCheck} from "react-icons/fa";
 import {IoMdClose} from "react-icons/io";
+import {Expense} from "../types/expense";
+import * as React from "react";
 
-const ExpenseForm =
-    ({
-         data,
-         editItem,
-         value,
-         setValue,
-         handleOpenCloseForm,
-         handleSubmit
-    }) => {
+type ExpenseFormProps = {
+    data: Expense[];
+    editItem: Expense | null;
+    value: string;
+    setValue: React.Dispatch<React.SetStateAction<string>>;
+    handleOpenCloseForm: () => void;
+    handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
 
+}
 
+const ExpenseForm = ({
+     data,
+     editItem,
+     value,
+     setValue,
+     handleOpenCloseForm,
+     handleSubmit
+}: ExpenseFormProps) => {
 
     return (
         <form action="envoi" onSubmit={handleSubmit}>

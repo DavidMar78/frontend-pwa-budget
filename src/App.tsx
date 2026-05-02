@@ -1,10 +1,10 @@
 import "./App.css"
 import { useMemo } from "react";
-import Donut from "./components/Donut.jsx";
-import ExpenseList from "./components/ExpenseList.jsx";
-import ExpenseForm from "./components/ExpenseForm.jsx";
-import useExpenses from "./hooks/useExpenses.js";
-import { computeDiff, format } from "./utils/calculateBalance.js"
+import Donut from "./components/Donut";
+import ExpenseList from "./components/ExpenseList";
+import ExpenseForm from "./components/ExpenseForm";
+import useExpenses from "./hooks/useExpenses";
+import { computeDiff, format } from "./utils/calculateBalance"
 
 function App() {
     const {

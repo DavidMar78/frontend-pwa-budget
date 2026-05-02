@@ -1,4 +1,6 @@
-export const fetchExpense = async () => {
+import {Expense, NewExpense} from "../types/expense";
+
+export const fetchExpense = async (): Promise<Expense[]> => {
     // je recup les depenses ds res en demandant au server
     const res = await fetch("/expenses");
     // verifucation: si erreur http => stop
@@ -9,7 +11,7 @@ export const fetchExpense = async () => {
     return data;
 };
 
-export const createExpense = async (payload) => {
+export const createExpense = async (payload: NewExpense): Promise<void> => {
     await fetch("/expenses", {
         method: "POST",
         headers: {
@@ -19,7 +21,7 @@ export const createExpense = async (payload) => {
     });
 };
 
-export const updateExpense = async (payload) => {
+export const updateExpense = async (payload: NewExpense): Promise<void> => {
     await fetch("/expenses", {
         method: "PUT",
         headers: {
@@ -29,7 +31,7 @@ export const updateExpense = async (payload) => {
     });
 };
 
-export const deleteExpense = async (id) => {
+export const deleteExpense = async (id: number): Promise<void> => {
     const res =
         await fetch(`/expenses/${id}`, {
             method: "DELETE"
