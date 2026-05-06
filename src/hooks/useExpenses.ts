@@ -2,19 +2,38 @@ import {useEffect, useState} from "react";
 import { fetchExpense, createExpense, updateExpense, deleteExpense } from "../services/expensesApi";
 import {Expense} from "../types/expense";
 import * as React from "react";
+import { showSuccess } from "../utils/toast";
 
 type UseExpensesReturn = {
     data: Expense[];
-    newEnter: boolean;
-    value: string;
+    newEnter: boolean; // boolean pour ouvrir ou fermer le form
+    value: string; // valeur de l a rentrée du montant de la dépense
+    errors: FormErrors;
     setValue: React.Dispatch<React.SetStateAction<string>>;
+    setErrors: React.Dispatch<React.SetStateAction<FormErrors>>;
+    form: FormSelection;
+    expenseToDelete: number;
+    setForm: React.Dispatch<React.SetStateAction<FormSelection>>;
     editItem: Expense | null;
+    isDeleteModalOpen: boolean;
     fetchData: () => Promise<void>;
     handleSubmit: (e: React.FormEvent<HTMLFormElement>) => Promise<void>;
     handleUpdate: (item: Expense) => void;
     handleDelete: (id: number) => Promise<void>;
     handleOpenCloseForm: () => void;
-}
+    openDeleteModal: (id: number) => void;
+    closeDeleteModal: () => void;
+};
+
+export type FormSelection = {
+    user: string;
+    shop: string;
+};
+
+export type FormErrors = {
+    user?: string;
+    shop?: string;
+};
 
 const useExpenses = (): UseExpensesReturn => {
 
@@ -22,6 +41,13 @@ const useExpenses = (): UseExpensesReturn => {
     const [editItem, setEditItem] = useState<Expense | null>(null);
     const [value, setValue] = useState<string>("");
     const [newEnter, setNewEnter] = useState<boolean>(false);
+    const [errors, setErrors] = useState<FormErrors>({})
+    const [form, setForm] = useState<FormSelection>({
+        user:"",
+        shop: ""
+    });
+    const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+    const [expenseToDelete, setExpenseToDelete] = useState<number>(0)
 
     // Fonction la + importante, celle qui charge tte les données
     const fetchData = async (): Promise<void> => {
@@ -61,15 +87,31 @@ const useExpenses = (): UseExpensesReturn => {
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
         e.preventDefault();
 
-        const form = e.target as HTMLFormElement;
-        const formData = new FormData(form);
+        const newErrors: FormErrors = {};
 
         const payload = {
-            user: formData.get("user") as string,
-            shop: formData.get("shop") as string,
+            user: form.user,
+            shop: form.shop,
             sum: Number(value),
-            date: Date.now()
+            date: new Date().toISOString()
         }
+
+        // verification de la selection d'un user
+
+        if (!form.user) {
+            newErrors.user = "Sélectionne un payeur";
+        }
+
+        if (!form.shop) {
+            newErrors.shop = "Sélectionne un shop";
+        }
+
+        setErrors(newErrors);
+
+        if (Object.keys(newErrors).length > 0) {
+            return;
+        }
+
         try {
             if (editItem) {
                 // UPDATE => appelle le service
@@ -81,10 +123,17 @@ const useExpenses = (): UseExpensesReturn => {
             // Recharge des données
             await fetchData()
 
+            // Toast success
+            showSuccess("Dépense ajoutée");
+
             // RESET UI
+            setForm({
+                user: "",
+                shop: ""
+            });
             setEditItem(null);
             setValue("");
-            form.reset();
+            setNewEnter(prev => !prev);
 
         } catch (error: unknown) {
             console.log(error);
@@ -106,28 +155,53 @@ const useExpenses = (): UseExpensesReturn => {
             await fetchData()
 
         } catch (error: unknown) {
-            console.log(error)
+                console.log(error)
         }
     }
+
+    function openDeleteModal (id: number) {
+        setExpenseToDelete(id);
+        setIsDeleteModalOpen(prev => !prev);
+    }
+
+    function closeDeleteModal (){
+        setExpenseToDelete(0);
+        setIsDeleteModalOpen(prev => !prev);
+    }
+
 
     // Open or close the form for one new enter
     function handleOpenCloseForm() {
         setNewEnter(prev => !prev);
         setValue("");
         setEditItem(null);
+        setForm({
+            user: "",
+            shop: ""
+        });
+        setErrors({});
+        console.log(value);
     }
 
     return {
         data,
+        errors,
         newEnter,
         value,
         setValue,
+        setErrors,
+        form,
+        setForm,
         editItem,
+        isDeleteModalOpen,
+        expenseToDelete,
         fetchData,
         handleSubmit,
         handleUpdate,
         handleDelete,
-        handleOpenCloseForm
+        handleOpenCloseForm,
+        openDeleteModal,
+        closeDeleteModal
     }
 }
 

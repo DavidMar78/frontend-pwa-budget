@@ -1,0 +1,22 @@
+:root {
+    --color-bg: #f6f8fb;
+    --color-surface: #ffffff;
+
+    --color-primary: #4f46e5;
+
+    --color-text: #0f172a;
+    --color-text-muted: #64748b;
+
+    --radius: 16px;
+
+    --space-sm: 8px;
+    --space-md: 16px;
+
+    --shadow: 0 8px 20px rgba(0,0,0,0.06);
+
+    --transition-fast: 0.15s ease;
+
+    --color-muted-bg: #ffffff;
+    --color-border: #e5e7eb;
+
+}

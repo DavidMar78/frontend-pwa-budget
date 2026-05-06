@@ -1,5 +1,6 @@
+import { Expense } from "../types/expense";
 
-export const computeDiff = (data) => {
+export const computeDiff = (data: Expense[]) => {
     const totalDavid = data
         .filter(item => item.user === "David")
         .reduce((acc, item) => acc + item.sum, 0);
@@ -14,8 +15,17 @@ export const computeDiff = (data) => {
     };
 };
 
-export const format = (value) =>
+export const format = (value: number): string =>
     value.toLocaleString("fr-FR", {
         minimumFractionDigits: 2,
         maximumFractionDigits: 2,
-    });0
+    });
+
+export function formatDate(date: string) {
+    const d = new Date(date);
+
+    return d.toLocaleDateString("fr-FR", {
+        day: "2-digit",
+        month: "short"
+    });
+}

@@ -1,58 +1,96 @@
-import "./App.css"
+import styles from "./App.module.css";
 import { useMemo } from "react";
 import Donut from "./components/Donut";
-import ExpenseList from "./components/ExpenseList";
-import ExpenseForm from "./components/ExpenseForm";
+import ExpenseList from "./components/ExpenseList/ExpenseList";
+import ExpenseForm from "./components/ExpenseForm/ExpenseForm";
 import useExpenses from "./hooks/useExpenses";
-import { computeDiff, format } from "./utils/calculateBalance"
+import { computeDiff, format } from "./utils/utils";
+import { Toaster } from "react-hot-toast";
+import DeleteModal from "./components/DeleteModal/DeleteModal";
 
 function App() {
     const {
         newEnter,
+        errors,
         data,
         value,
         setValue,
         editItem,
+        isDeleteModalOpen,
+        expenseToDelete,
+        form,
+        setForm,
+        setErrors,
         handleOpenCloseForm,
         handleDelete,
         handleSubmit,
-        handleUpdate
-        } = useExpenses();
+        handleUpdate,
+        openDeleteModal,
+        closeDeleteModal
+    } = useExpenses();
 
     const { diffDavid, diffLaetitia } = useMemo(() => {
-        return computeDiff(data)
-    }, [data])
+        return computeDiff(data);
+    }, [data]);
 
     return (
-        <div className="container">
-            <h2>BUDGET COURSE v1-4</h2>
-            <div className="info-container">
-                {diffDavid > 0 ?
-                    <Donut difference={format((diffDavid))} user="David"/>
-                    :
-                    <Donut difference={format(diffLaetitia)} user="Laetitia"/>}
+        <>
+            <Toaster position="bottom-center" />
+            <div className={styles.app}>
+
+                <header className={styles.header}>
+                    <div className={styles.balance}>
+                        {diffDavid > 0 ? (
+                            <Donut difference={format(diffDavid)} user="David" />
+                        ) : (
+                            <Donut difference={format(diffLaetitia)} user="Laetitia" />
+                        )}
+                    </div>
+                </header>
+
+                {/* 🔹 CONTENT = zone scrollable */}
+                <main className={styles.content}>
+                    <ExpenseList
+                        data={data}
+                        handleUpdate={handleUpdate}
+                        setValue={setValue}
+                        editItem={editItem}
+                        handleOpenCloseForm={handleOpenCloseForm}
+                        openDeleteModal={openDeleteModal}
+                    />
+                </main>
+
+                {/* 🔹 FOOTER = formulaire */}
+                <footer className={styles.footer}>
+                    {newEnter && (
+                        <ExpenseForm
+                            errors={errors}
+                            data={data}
+                            value={value}
+                            setValue={setValue}
+                            editItem={editItem}
+                            form={form}
+                            setForm={setForm}
+                            setErrors={setErrors}
+                            handleOpenCloseForm={handleOpenCloseForm}
+                            handleSubmit={handleSubmit}
+                        />
+                    )}
+                </footer>
+
             </div>
-            {!newEnter ?
-                < ExpenseList
-                    data={data}
+
+            {isDeleteModalOpen &&
+                <DeleteModal
                     handleDelete={handleDelete}
-                    handleUpdate={handleUpdate}
-                    setValue={setValue}
-                    editItem={editItem}
-                    handleOpenCloseForm={handleOpenCloseForm}
-                />
-                :
-                < ExpenseForm
-                    data={data}
-                    value={value}
-                    setValue={setValue}
-                    editItem={editItem}
-                    handleOpenCloseForm={handleOpenCloseForm}
-                    handleSubmit={handleSubmit}
+                    expenseToDelete={expenseToDelete}
+                    closeDeleteModal={closeDeleteModal}
                 />
             }
-        </div>
-        )
+
+        </>
+
+    );
 }
 
 export default App;

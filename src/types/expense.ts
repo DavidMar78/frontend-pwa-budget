@@ -3,12 +3,12 @@ export type Expense = {
     user: string;
     shop: string;
     sum: number;
-    date: number;
+    date: string;
 };
 
 export type NewExpense = {
     user: string;
     shop: string;
     sum: number;
-    date: number;
+    date: string;
 };

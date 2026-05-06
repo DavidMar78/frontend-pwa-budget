@@ -1,0 +1,98 @@
+.card {
+    background: var(--color-surface);
+    border-radius: 18px;
+    padding: 14px 16px;
+
+    box-shadow: 0 10px 25px rgba(0,0,0,0.06);
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+}
+
+/* 👇 effet moderne */
+.card:active {
+    transform: scale(0.98);
+}
+
+/* ligne principale */
+.row {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* texte principal */
+.label {
+    font-weight: 600;
+    font-size: 15px;
+    color: var(--color-text);
+}
+
+/* 💰 montant → très important visuellement */
+.amount {
+    font-weight: 700;
+    font-size: 16px;
+    color: var(--color-primary);
+}
+
+/* sous ligne */
+.subRow {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+/* utilisateur */
+.user {
+    font-size: 12px;
+    color: var(--color-text-muted);
+}
+
+/* Date du jour */
+.meta {
+    font-size: 12px;
+    color: var(--color-text-muted);
+}
+
+/* actions */
+.actions {
+    display: flex;
+    gap: 8px;
+}
+
+/* boutons modernes */
+.actions button {
+    width: 32px;
+    height: 32px;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    border-radius: 8px;
+    border: none;
+
+    background: rgba(0,0,0,0.04);
+    cursor: pointer;
+}
+
+/* hover (desktop) */
+.actions button:hover {
+    background: rgba(0,0,0,0.08);
+}
+
+/* touch feedback */
+.actions button:active {
+    transform: scale(0.9);
+}
+
+.actions button:first-child {
+    color: #3b82f6;
+}
+
+.actions button:last-child {
+    color: #ef4444;
+}

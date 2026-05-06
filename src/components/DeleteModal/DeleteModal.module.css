@@ -1,0 +1,16 @@
+.background{
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(200,200,200,0.5);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+.content {
+    width: 100px;
+    height: 100px;
+    background-color: #bcb3b3;
+}

@@ -1,18 +1,23 @@
 import { PieChart, Pie, Cell, Label } from "recharts";
 
 const data = [
-    { name: "A", value: 40 },
-    { name: "B", value: 30 }
+    { name: "A", value: 50 },
+    { name: "B", value: 50 }
 ];
 
-export default function Donut({ difference, user }) {
+type DonutProps = {
+    difference: string;
+    user: string;
+};
 
-    const renderCenter = ({ cx, cy }) => {
+export default function Donut({ difference, user }: DonutProps) {
+
+    const renderCenter = ({ cx, cy }: { cx: number; cy: number }) => {
         return (
             <text x={cx} y={cy} textAnchor="middle" dominantBaseline="middle">
-                <tspan x={cx} dy="-30" fontSize="30">{user}</tspan>
-                <tspan x={cx} dy="50" fontSize="50">{difference}</tspan>
-                <tspan x={cx} dy="40" fontSize="15">euros en positif</tspan>
+                <tspan x={cx} dy="-35" fontSize="30">{user}</tspan>
+                <tspan x={cx} dy="40" fontSize="50">{difference}</tspan>
+                <tspan x={cx} dy="35" fontSize="15">euros en positif</tspan>
             </text>
         );
     };
@@ -22,8 +27,10 @@ export default function Donut({ difference, user }) {
             <Pie
                 data={data}
                 dataKey="value"
-                innerRadius={120}
-                outerRadius={150}
+                cx={150}
+                cy={150}
+                innerRadius={100}
+                outerRadius={130}
                 labelLine={false}
                 label={renderCenter}
             >
