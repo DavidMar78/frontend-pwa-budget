@@ -15,18 +15,22 @@ const DeleteModal = ({
     return (
         <div className={styles.background}>
             <div className={styles.content}>
+                <h3>Confirmez la suppression?</h3>
                 <p>Êtes-vous sûr de vouloir supprimer cette dépense ?</p>
-                <button
-                    onClick={closeDeleteModal}
-                >
-                    Annuler
-                </button>
+                <div className={styles.btnContainer}>
+                    <button
+                        onClick={closeDeleteModal}
+                    >
+                        Annuler
+                    </button>
 
-                <button
-                    onClick={() => handleDelete(expenseToDelete)}
-                >
-                    Valider
-                </button>
+                    <button
+                        onClick={() => handleDelete(expenseToDelete)}
+                    >
+                        Effacer
+                    </button>
+                </div>
+
             </div>
         </div>
 

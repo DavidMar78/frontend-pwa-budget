@@ -12,12 +12,15 @@ type DonutProps = {
 
 export default function Donut({ difference, user }: DonutProps) {
 
-    const renderCenter = ({ cx, cy }: { cx: number; cy: number }) => {
+    const renderCenter =
+        ({ cx, cy }: { cx: number; cy: number }) => {
+        console.log("DONNUT RENDER");
+
         return (
             <text x={cx} y={cy} textAnchor="middle" dominantBaseline="middle">
-                <tspan x={cx} dy="-35" fontSize="30">{user}</tspan>
-                <tspan x={cx} dy="40" fontSize="50">{difference}</tspan>
-                <tspan x={cx} dy="35" fontSize="15">euros en positif</tspan>
+                <tspan x={cx} dy="-35" fontSize="25" color="#0f172a">{user}</tspan>
+                <tspan x={cx} dy="40" fontSize="45">{difference}</tspan>
+                <tspan x={cx} dy="40" fontSize="15" color="#0f172a">euros en positif</tspan>
             </text>
         );
     };

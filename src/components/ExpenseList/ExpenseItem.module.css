@@ -90,9 +90,9 @@
 }
 
 .actions button:first-child {
-    color: #3b82f6;
+    color: var(--color-blue-btn);
 }
 
 .actions button:last-child {
-    color: #ef4444;
+    color: var(--color-red-btn);
 }

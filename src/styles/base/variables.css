@@ -1,4 +1,6 @@
 :root {
+    --font-family: "Inter", sans-serif;
+
     --color-bg: #f6f8fb;
     --color-surface: #ffffff;
 
@@ -18,5 +20,8 @@
 
     --color-muted-bg: #ffffff;
     --color-border: #e5e7eb;
+
+    --color-red-btn: #ef4444;
+    --color-blue-btn: #3b82f6;
 
 }
