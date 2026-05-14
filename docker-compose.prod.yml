@@ -1,0 +1,10 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.prod
+
+    container_name: expenses_frontend_prod
+
+    ports:
+      - "80:80"

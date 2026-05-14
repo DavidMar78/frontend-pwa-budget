@@ -1,8 +1,9 @@
 import {Expense, NewExpense} from "../types/expense";
+import API_URL from "./api";
 
 export const fetchExpense = async (): Promise<Expense[]> => {
     // je recup les depenses ds res en demandant au server
-    const res = await fetch("/expenses");
+    const res = await fetch(`${API_URL}/expenses`);
     // verifucation: si erreur http => stop
     if (!res.ok) throw new Error("Erreur serveur");
     // conversion du json en js
@@ -12,7 +13,7 @@ export const fetchExpense = async (): Promise<Expense[]> => {
 };
 
 export const createExpense = async (payload: NewExpense): Promise<void> => {
-    await fetch("/expenses", {
+    await fetch(`${API_URL}/expenses`, {
         method: "POST",
         headers: {
             "Content-Type": "application/json"
@@ -21,19 +22,27 @@ export const createExpense = async (payload: NewExpense): Promise<void> => {
     });
 };
 
-export const updateExpense = async (payload: NewExpense): Promise<void> => {
-    await fetch("/expenses", {
+export const updateExpense = async (
+    id: number,
+    payload: NewExpense
+): Promise<void> => {
+
+    const res = await fetch(`${API_URL}/expenses/${id}`, {
         method: "PUT",
         headers: {
             "Content-Type": "application/json"
         },
         body: JSON.stringify(payload)
     });
+
+    if (!res.ok) {
+        throw new Error("Erreur UPDATE")
+    }
 };
 
 export const deleteExpense = async (id: number): Promise<void> => {
     const res =
-        await fetch(`/expenses/${id}`, {
+        await fetch(`${API_URL}/expenses/${id}`, {
             method: "DELETE"
         });
     if (!res.ok) throw new Error("Erreur DELETE");

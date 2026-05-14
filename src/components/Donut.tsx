@@ -14,7 +14,6 @@ export default function Donut({ difference, user }: DonutProps) {
 
     const renderCenter =
         ({ cx, cy }: { cx: number; cy: number }) => {
-        console.log("DONNUT RENDER");
 
         return (
             <text x={cx} y={cy} textAnchor="middle" dominantBaseline="middle">

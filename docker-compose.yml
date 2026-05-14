@@ -1,0 +1,7 @@
+services:
+  frontend:
+    build: .
+    container_name: expenses_frontend
+
+    ports:
+      - "5173:5173"

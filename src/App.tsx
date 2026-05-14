@@ -35,7 +35,9 @@ function App() {
 
     return (
         <>
-            <Toaster position="bottom-center" />
+            <Toaster
+                position="bottom-center"
+            />
             <div className={styles.app}>
 
                 <header className={styles.header}>

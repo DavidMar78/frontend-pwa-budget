@@ -76,12 +76,6 @@ const useExpenses = (): UseExpensesReturn => {
             }
         }
         loadData()
-        // Refresh toutes les 5 secondes
-        const interval = setInterval(() => {
-            fetchData()
-        }, 5000)
-        // clear
-        return() => clearInterval(interval)
     },[]);
 
     async function handleSubmit(e: React.FormEvent<HTMLFormElement>): Promise<void> {
@@ -115,16 +109,15 @@ const useExpenses = (): UseExpensesReturn => {
         try {
             if (editItem) {
                 // UPDATE => appelle le service
-                await updateExpense(payload)
+                await updateExpense(editItem.id, payload)
+                showSuccess("Dépense modifiée");
             } else {
                 // CREATE => appelle le service
                 await createExpense(payload)
+                showSuccess("Dépense ajoutée");
             }
             // Recharge des données
             await fetchData()
-
-            // Toast success
-            showSuccess("Dépense ajoutée");
 
             // RESET UI
             setForm({
@@ -142,6 +135,10 @@ const useExpenses = (): UseExpensesReturn => {
 
     function handleUpdate(item: Expense)  {
         setEditItem(item);
+        setForm({
+            user: item.user,
+            shop: item.shop
+        })
         setValue(item.sum.toString())
         setNewEnter(true);
     }
@@ -180,7 +177,6 @@ const useExpenses = (): UseExpensesReturn => {
             shop: ""
         });
         setErrors({});
-        console.log(value);
     }
 
     return {
